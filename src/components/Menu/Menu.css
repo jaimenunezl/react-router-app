@@ -1,0 +1,10 @@
+.navigation {
+  display: flex;
+  gap: 8px;
+}
+
+.active {
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  color: red;
+}
