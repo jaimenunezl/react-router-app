@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 
 const roles = {
   ADMIN: 'ADMIN',
@@ -51,6 +51,7 @@ const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [redirect, setRedirect] = useState(null);
 
   const login = ({ email }) => {
     const user = userList.find(({ email: adminEmail }) => adminEmail === email);
@@ -68,8 +69,14 @@ function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const savePendingRedirect = (location) => {
+    setRedirect(location);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, redirect, savePendingRedirect }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -80,7 +87,14 @@ function useAuth() {
 }
 
 function AuthRoute({ children }) {
-  const { user } = useAuth();
+  const { user, savePendingRedirect } = useAuth();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!user) {
+      savePendingRedirect(location);
+    }
+  }, [location, savePendingRedirect, user]);
 
   if (!user) {
     return <Navigate to="/login" />;

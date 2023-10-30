@@ -24,18 +24,26 @@ function BlogArticle() {
     returnToBlog();
   };
 
+  if (!blog) return <div>Blog no encontrado</div>;
+
   return (
     <div>
       <h3>{blog.title}</h3>
       <p>{blog.content}</p>
-      {(user.permissions.includes(AuthPermission.DELETE) ||
-        user.email === blog.user) && (
-        <button onClick={() => handleDeleteBlog(blog.id)}>Eliminar</button>
+
+      {user && (
+        <>
+          {(user.permissions.includes(AuthPermission.DELETE) ||
+            user.email === blog.user) && (
+            <button onClick={() => handleDeleteBlog(blog.id)}>Eliminar</button>
+          )}
+          {(user.permissions.includes(AuthPermission.EDIT) ||
+            user.email === blog.user) && (
+            <button onClick={() => handleEditBlog(blog.slug)}>Editar</button>
+          )}
+        </>
       )}
-      {(user.permissions.includes(AuthPermission.EDIT) ||
-        user.email === blog.user) && (
-        <button onClick={() => handleEditBlog(blog.slug)}>Editar</button>
-      )}
+
       <button onClick={returnToBlog}>volver</button>
     </div>
   );

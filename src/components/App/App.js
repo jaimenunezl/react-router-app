@@ -46,14 +46,7 @@ function App() {
                   }
                 ></Route>
                 <Route path="/blog" element={<Blog />}>
-                  <Route
-                    path=":slug"
-                    element={
-                      <AuthRoute>
-                        <BlogArticle />
-                      </AuthRoute>
-                    }
-                  ></Route>
+                  <Route path=":slug" element={<BlogArticle />}></Route>
                 </Route>
                 <Route
                   path="/profile"

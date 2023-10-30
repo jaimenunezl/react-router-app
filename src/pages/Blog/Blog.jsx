@@ -23,7 +23,7 @@ function Blog() {
     <div>
       <header>
         <h2>Blogs</h2>
-        {[roles.ADMIN, roles.EDITOR].includes(user.role) && (
+        {user && [roles.ADMIN, roles.EDITOR].includes(user.role) && (
           <button onClick={handleNewBlog}>Nuevo Blog</button>
         )}
       </header>

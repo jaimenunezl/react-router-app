@@ -10,7 +10,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const { login, user } = useAuth();
+  const { login, user, redirect, savePendingRedirect } = useAuth();
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -18,7 +18,13 @@ function Login() {
 
     try {
       login({ email });
-      navigate('/');
+
+      if (redirect) {
+        navigate(redirect);
+      } else {
+        navigate('/');
+      }
+      savePendingRedirect(null);
     } catch {
       setError('Credenciales incorrectas');
     }
